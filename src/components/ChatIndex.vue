@@ -12,8 +12,8 @@ import {
 import { ref, reactive } from "vue";
 
 const configuration: Configuration = new Configuration({
-  organization: "org-SPkH5Jw420EOxS7VHFDSPiev",
-  apiKey: "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",
+  organization: "your-code",
+  apiKey: "your-key",
 });
 const openai: OpenAIApi = new OpenAIApi(configuration);
 
