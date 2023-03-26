@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { AxiosResponse } from "axios";
+
 import {
   ChatCompletionRequestMessage,
   ChatCompletionRequestMessageRoleEnum,
@@ -7,7 +8,8 @@ import {
   CreateChatCompletionResponse,
   OpenAIApi,
 } from "openai";
-import { ref, reactive } from "vue";
+
+import { ref, reactive, watch, nextTick } from "vue";
 
 const configuration: Configuration = new Configuration({
   organization: "your-code",
@@ -26,23 +28,39 @@ let inputVal = ref<string>("");
 
 // 发送消息
 async function sendMsg() {
-  messages.push({
-    role: "user",
-    content: inputVal.value,
-  });
-  inputVal.value = "";
-  const response: AxiosResponse<CreateChatCompletionResponse> =
-    await openai.createChatCompletion({
-      model,
-      messages,
+  if (inputVal.value.trim() === "") {
+    inputVal.value = "";
+    return;
+  } else {
+    messages.push({
+      role: "user",
+      content: inputVal.value,
     });
+    inputVal.value = "";
+    const response: AxiosResponse<CreateChatCompletionResponse> =
+      await openai.createChatCompletion({
+        model,
+        messages,
+      });
 
-  messages.push({
-    role: response.data.choices[0].message
-      ?.role as ChatCompletionRequestMessageRoleEnum,
-    content: response.data.choices[0].message?.content as string,
-  });
+    messages.push({
+      role: response.data.choices[0].message
+        ?.role as ChatCompletionRequestMessageRoleEnum,
+      content: response.data.choices[0].message?.content as string,
+    });
+  }
 }
+
+const msgList = ref<HTMLElement | any>();
+
+watch(messages, () => {
+  nextTick(() => {
+    msgList.value?.scrollTo({
+      top: msgList.value?.lastElementChild?.offsetTop,
+      behavior: "smooth",
+    });
+  });
+});
 </script>
 
 <template>
@@ -52,7 +70,7 @@ async function sendMsg() {
       <div>chatgpt</div>
       <el-icon><MoreFilled /></el-icon>
     </div>
-    <ul class="message">
+    <ul class="message" ref="msgList">
       <li
         v-for="(msg, index) in messages"
         :key="index"
@@ -80,7 +98,7 @@ async function sendMsg() {
         @keyup.enter="sendMsg"
       />
 
-      <el-button type="primary" @click="sendMsg">发送</el-button>
+      <el-button type="success" @click="sendMsg">发送</el-button>
     </div>
   </div>
 </template>
@@ -90,7 +108,6 @@ async function sendMsg() {
   position: absolute;
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
   height: 700px;
   width: 500px;
@@ -139,7 +156,6 @@ async function sendMsg() {
           background-color: #ffffff;
           border-radius: 5px;
           font-size: 14px;
-
           color: #000000;
           word-break: hyphenate;
           position: relative;
@@ -150,7 +166,6 @@ async function sendMsg() {
           background-color: #89d961;
           border-radius: 5px;
           font-size: 14px;
-
           color: #000000;
           word-break: hyphenate;
           position: relative;
@@ -189,9 +204,20 @@ async function sendMsg() {
     }
   }
 
+  .message::-webkit-scrollbar {
+    width: 3px;
+  }
+  .message:hover::-webkit-scrollbar-thumb {
+    background-color: #bababa;
+    border-radius: 3px;
+  }
+
   .input {
-    margin: 10px;
+    padding: 10px;
     display: flex;
+    .el-input {
+      margin-right: 5px;
+    }
   }
 }
 </style>
