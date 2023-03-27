@@ -12,7 +12,6 @@ import {
 import { ref, reactive, watch, nextTick } from "vue";
 
 const configuration: Configuration = new Configuration({
-  organization: "your-code",
   apiKey: "your-key",
 });
 const openai: OpenAIApi = new OpenAIApi(configuration);
@@ -67,7 +66,7 @@ watch(messages, () => {
   <div class="chatBody">
     <header class="header">
       <el-icon><ArrowLeft /></el-icon>
-      <div>GPT</div>
+      <div>尚宇真GPT</div>
       <el-icon><MoreFilled /></el-icon>
     </header>
     <ul class="messageBody" ref="msgList">
