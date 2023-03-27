@@ -14,9 +14,5 @@ html,body{
     margin: 0;
 }
 
-::-webkit-scrollbar{
-    width: 10px;
-    height: 10px;
-}
 
 </style>

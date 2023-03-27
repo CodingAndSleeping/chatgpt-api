@@ -65,19 +65,19 @@ watch(messages, () => {
 
 <template>
   <div class="chatBody">
-    <div class="header">
+    <header class="header">
       <el-icon><ArrowLeft /></el-icon>
-      <div>chatgpt</div>
+      <div>GPT</div>
       <el-icon><MoreFilled /></el-icon>
-    </div>
-    <ul class="message" ref="msgList">
+    </header>
+    <ul class="messageBody" ref="msgList">
       <li
         v-for="(msg, index) in messages"
         :key="index"
         :class="msg.role == 'assistant' ? 'assisClass' : 'userClass'"
       >
         <div class="chatMeg" v-show="msg.role == 'assistant'">
-          <img src="../assets/robot.png" alt="gpt" />
+          <img src="../assets/syz.jpg" alt="gpt" />
           <div :class="msg.role == 'assistant' ? 'assisBubble' : 'userBubble'">
             {{ msg.content }}
           </div>
@@ -87,11 +87,11 @@ watch(messages, () => {
           <div :class="msg.role == 'assistant' ? 'assisBubble' : 'userBubble'">
             {{ msg.content }}
           </div>
-          <img src="../assets/user.png" alt="user" />
+          <img src="../assets/lzt.jpg" alt="user" />
         </div>
       </li>
     </ul>
-    <div class="input">
+    <footer class="footer">
       <el-input
         v-model="inputVal"
         placeholder="请输入..."
@@ -99,7 +99,7 @@ watch(messages, () => {
       />
 
       <el-button type="success" @click="sendMsg">发送</el-button>
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -109,8 +109,8 @@ watch(messages, () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 700px;
-  width: 500px;
+  height: 800px;
+  width: 700px;
   top: 0;
   bottom: 0;
   left: 0;
@@ -127,7 +127,7 @@ watch(messages, () => {
     padding: 0 15px;
   }
 
-  .message {
+  .messageBody {
     height: 90%;
     width: 100%;
     overflow-y: auto;
@@ -147,7 +147,8 @@ watch(messages, () => {
         img {
           height: 30px;
           width: 30px;
-          padding: 0 5px;
+          margin: 0 10px;
+          border-radius: 4px;
         }
 
         .assisBubble {
@@ -204,15 +205,15 @@ watch(messages, () => {
     }
   }
 
-  .message::-webkit-scrollbar {
+  .messageBody::-webkit-scrollbar {
     width: 3px;
   }
-  .message:hover::-webkit-scrollbar-thumb {
+  .messageBody:hover::-webkit-scrollbar-thumb {
     background-color: #bababa;
-    border-radius: 3px;
+    border-radius: 6px;
   }
 
-  .input {
+  .footer {
     padding: 10px;
     display: flex;
     .el-input {
