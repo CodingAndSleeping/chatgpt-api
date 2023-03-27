@@ -27,6 +27,7 @@ let inputVal = ref<string>("");
 
 // 发送消息
 async function sendMsg() {
+  // 如果输入框内容为空格则不发送消息
   if (inputVal.value.trim() === "") {
     inputVal.value = "";
     return;
@@ -52,6 +53,7 @@ async function sendMsg() {
 
 const msgList = ref<HTMLElement | any>();
 
+// 侦听消息数组变化，滚动条滚动到最后一条消息处
 watch(messages, () => {
   nextTick(() => {
     msgList.value?.scrollTo({
@@ -65,9 +67,13 @@ watch(messages, () => {
 <template>
   <div class="chatBody">
     <header class="header">
-      <el-icon><ArrowLeft /></el-icon>
-      <div>尚宇真GPT</div>
-      <el-icon><MoreFilled /></el-icon>
+      <el-icon>
+        <ArrowLeft />
+      </el-icon>
+      <div>GPT</div>
+      <el-icon>
+        <MoreFilled />
+      </el-icon>
     </header>
     <ul class="messageBody" ref="msgList">
       <li
@@ -96,7 +102,6 @@ watch(messages, () => {
         placeholder="请输入..."
         @keyup.enter="sendMsg"
       />
-
       <el-button type="success" @click="sendMsg">发送</el-button>
     </footer>
   </div>
@@ -143,6 +148,7 @@ watch(messages, () => {
         display: flex;
         align-items: center;
         align-items: flex-start;
+
         img {
           height: 30px;
           width: 30px;
@@ -160,6 +166,7 @@ watch(messages, () => {
           word-break: hyphenate;
           position: relative;
         }
+
         .userBubble {
           max-width: 300px;
           padding: 5px;
@@ -207,6 +214,7 @@ watch(messages, () => {
   .messageBody::-webkit-scrollbar {
     width: 3px;
   }
+
   .messageBody:hover::-webkit-scrollbar-thumb {
     background-color: #bababa;
     border-radius: 6px;
@@ -215,6 +223,7 @@ watch(messages, () => {
   .footer {
     padding: 10px;
     display: flex;
+
     .el-input {
       margin-right: 5px;
     }
