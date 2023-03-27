@@ -223,7 +223,7 @@ watch(messages, () => {
   .footer {
     padding: 10px;
     display: flex;
-
+    border-top: 1px solid #d6d6d6;
     .el-input {
       margin-right: 5px;
     }
