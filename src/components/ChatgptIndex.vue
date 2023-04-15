@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AxiosResponse } from "axios";
-import "github-markdown-css";
+
 import { marked } from "marked";
 
 import {
@@ -71,13 +71,7 @@ watch(messages, () => {
 <template>
   <div class="chatBody">
     <header class="header">
-      <el-icon>
-        <ArrowLeft />
-      </el-icon>
       <div>学习小助手</div>
-      <el-icon>
-        <MoreFilled />
-      </el-icon>
     </header>
     <ul class="messageBody" ref="msgList">
       <li
@@ -101,10 +95,10 @@ watch(messages, () => {
     <footer class="footer">
       <el-input
         v-model="inputVal"
-        placeholder="请输入..."
+        placeholder="请输入问题..."
         @keyup.enter="sendMsg"
       />
-      <el-button type="success" @click="sendMsg">发送</el-button>
+      <el-button type="info" @click="sendMsg">发送</el-button>
     </footer>
   </div>
 </template>
@@ -115,43 +109,44 @@ watch(messages, () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 90vh;
-  width: 95vw;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
-  background-color: #ffffff;
+  background-color: #343541;
 
   .header {
-    height: 8%;
+    height: 8vh;
+    width: 100vw;
     border-bottom: 1px solid #d6d6d6;
-    color: #000000;
+    color: #ffffff;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 0 15px;
   }
 
   .messageBody {
-    height: 90%;
-    width: 100%;
+    height: 90vh;
+    width: 100vw;
     overflow-y: auto;
-    margin: 0;
     padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     li {
       list-style: none;
-      // width: 100%;s
+      width: 60vw;
       display: flex;
       padding: 20px 40px 20px 20px;
-      border-bottom: 0.5px solid #ffffff;
 
       .chatMeg {
         margin: 5px 0;
         display: flex;
-        align-items: center;
         align-items: flex-start;
 
         img {
@@ -161,17 +156,14 @@ watch(messages, () => {
           border-radius: 4px;
         }
 
-
         .assisBubble {
           padding: 5px;
-          font-size: 14px;
           word-break: hyphenate;
           position: relative;
         }
 
         .userBubble {
           padding: 5px;
-          font-size: 14px;
           color: #ffffff;
           word-break: hyphenate;
           position: relative;
@@ -181,12 +173,12 @@ watch(messages, () => {
 
     .assisClass {
       justify-content: start;
-      background-color: #ffffff;
+      background-color: #0d1117;
     }
 
     .userClass {
       justify-content: end;
-      background-color: #343541;
+      background-color: #444654;
     }
   }
 
@@ -200,9 +192,10 @@ watch(messages, () => {
   }
 
   .footer {
+    width: 40vw;
     padding: 10px;
     display: flex;
-    border-top: 1px solid #d6d6d6;
+
     .el-input {
       margin-right: 5px;
     }

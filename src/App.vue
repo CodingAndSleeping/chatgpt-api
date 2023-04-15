@@ -11,10 +11,15 @@ let flag = ref<boolean>(false);
     <component :is="flag ? ChatIndex : ChatgptIndex"></component>
   </KeepAlive>
 
-  <el-button @click="flag = !flag">切换</el-button>
+
+    <el-icon class="switchBtn" @click="flag = !flag" :size="30"><Switch /></el-icon>
+
+
 </template>
 
 <style lang="scss">
+
+@import "github-markdown-css/github-markdown-dark.css";
 html,
 body {
   height: 100%;
@@ -22,4 +27,13 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.switchBtn{
+  position: fixed;
+  top: 1vh;
+  left: 0.5vw;
+  border: 1px solid white;
+  background-color: white;
+}
+
 </style>
