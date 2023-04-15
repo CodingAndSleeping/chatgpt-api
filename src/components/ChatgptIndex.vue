@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { AxiosResponse } from "axios";
+import "github-markdown-css"
+import { marked } from "marked";
 
 import {
   ChatCompletionRequestMessage,
@@ -20,7 +22,19 @@ const openai: OpenAIApi = new OpenAIApi(configuration);
 const model: string = "gpt-3.5-turbo";
 
 // 对话信息数组
-const messages = reactive<ChatCompletionRequestMessage[]>([]);
+const messages = reactive<ChatCompletionRequestMessage[]>([
+
+{
+  role:"user",
+  content:"请用ptython写一段 css程序"
+},
+{
+  role:"assistant",
+  content:'<p>以下是一个简单的 Python 程序，它接受用户输入的数字并计算其平方：</p> <pre><code class="language-python">num = int(input(&#39;请输入一个数字：&#39;)) square = num ** 2 print(&#39;该数字的平方为：&#39;, square) </code></pre> <p>以下是稍微复杂一些的 Python 程序示例，它从用户输入的几个字符串中返回最长的单词：</p> <pre><code class="language-python">str_input = input(&#39;请输入一些字符串，以空格分隔：&#39;) str_list = str_input.split() max_word = &#39;&#39; for word in str_list: if len(word) &gt; len(max_word): max_word = word print(&#39;最长的单词是：&#39;, max_word) </code></pre> <p>该程序将输入字符串分割成一个单词列表，并遍历该列表以查找最长的单词。最后，它打印出该单词。</p>'
+}
+]);
+
+
 
 // 输入内容
 let inputVal = ref<string>("");
@@ -43,10 +57,13 @@ async function sendMsg() {
         messages,
       });
 
+
     messages.push({
       role: response.data.choices[0].message
         ?.role as ChatCompletionRequestMessageRoleEnum,
-      content: response.data.choices[0].message?.content as string,
+      content: marked.parse(
+        response.data.choices[0].message?.content as string
+      ),
     });
   }
 }
@@ -63,14 +80,6 @@ watch(messages, () => {
   });
 });
 
-// const res = await openai.createImage({
-//   prompt: "A cute baby sea otter",
-//   n: 2,
-//   size: "1024x1024",
-// });
-
-
-// console.log(res);
 </script>
 
 <template>
@@ -79,27 +88,24 @@ watch(messages, () => {
       <el-icon>
         <ArrowLeft />
       </el-icon>
-      <div>GPT</div>
+      <div>学习小助手</div>
       <el-icon>
         <MoreFilled />
       </el-icon>
     </header>
     <ul class="messageBody" ref="msgList">
       <li
-      ref="liii"
         v-for="(msg, index) in messages"
         :key="index"
         :class="msg.role == 'assistant' ? 'assisClass' : 'userClass'"
       >
         <div class="chatMeg" v-show="msg.role == 'assistant'">
-          <img src="../assets/syz.jpg" alt="gpt" />
-          <div :class="msg.role == 'assistant' ? 'assisBubble' : 'userBubble'">
-            {{ msg.content }}
-          </div>
+          <img class="assistant" src="../assets/syz.jpg" alt="gpt" />
+          <div class="assisBubble markdown-body" v-html="msg.content" ></div>
         </div>
 
         <div class="chatMeg" v-show="msg.role == 'user'">
-          <div :class="msg.role == 'assistant' ? 'assisBubble' : 'userBubble'">
+          <div class="userBubble">
             {{ msg.content }}
           </div>
           <img src="../assets/lzt.jpg" alt="user" />
@@ -123,18 +129,20 @@ watch(messages, () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 800px;
-  width: 700px;
+  height: 90vh;
+  width: 95vw;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
+
 
   .header {
     height: 8%;
     border-bottom: 1px solid #d6d6d6;
+    color: #000000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -148,10 +156,13 @@ watch(messages, () => {
     margin: 0;
     padding: 10px 0;
 
+
     li {
       list-style: none;
-      width: 100%;
+      // width: 100%;s
       display: flex;
+      padding: 20px 40px 20px 20px;
+      border-bottom: 0.5px solid #ffffff;
 
       .chatMeg {
         margin: 5px 0;
@@ -165,59 +176,41 @@ watch(messages, () => {
           margin: 0 10px;
           border-radius: 4px;
         }
+        img.assistant {
+          margin-top: 10px;
+        }
 
         .assisBubble {
-          max-width: 300px;
           padding: 5px;
-          background-color: #ffffff;
-          border-radius: 5px;
+
           font-size: 14px;
-          color: #000000;
+          // color: #000000;
           word-break: hyphenate;
           position: relative;
         }
 
         .userBubble {
-          max-width: 300px;
+
           padding: 5px;
-          background-color: #89d961;
-          border-radius: 5px;
           font-size: 14px;
-          color: #000000;
+          color: #ffffff;
           word-break: hyphenate;
           position: relative;
         }
 
-        .assisBubble::before {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 0;
-          left: -10px;
-          top: 10px;
-          border: 5px solid;
-          border-color: transparent #ffffff transparent transparent;
-        }
-
-        .userBubble::before {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 0;
-          right: -10px;
-          top: 10px;
-          border: 5px solid;
-          border-color: transparent transparent transparent #89d961;
-        }
       }
     }
 
     .assisClass {
       justify-content: start;
+      background-color: #ffffff;
+
     }
 
     .userClass {
       justify-content: end;
+      background-color: #343541;
+
     }
   }
 

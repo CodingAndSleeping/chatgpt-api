@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ChatgptIndex: typeof import('./src/components/ChatgptIndex.vue')['default']
     ChatIndex: typeof import('./src/components/ChatIndex.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElIcon: typeof import('element-plus/es')['ElIcon']
