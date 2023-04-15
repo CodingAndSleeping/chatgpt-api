@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AxiosResponse } from "axios";
-import "github-markdown-css"
+import "github-markdown-css";
 import { marked } from "marked";
 
 import {
@@ -14,7 +14,7 @@ import {
 import { ref, reactive, watch, nextTick } from "vue";
 
 const configuration: Configuration = new Configuration({
-  apiKey: "your-key",
+  apiKey: "key",
 });
 const openai: OpenAIApi = new OpenAIApi(configuration);
 
@@ -22,19 +22,7 @@ const openai: OpenAIApi = new OpenAIApi(configuration);
 const model: string = "gpt-3.5-turbo";
 
 // 对话信息数组
-const messages = reactive<ChatCompletionRequestMessage[]>([
-
-{
-  role:"user",
-  content:"请用ptython写一段 css程序"
-},
-{
-  role:"assistant",
-  content:'<p>以下是一个简单的 Python 程序，它接受用户输入的数字并计算其平方：</p> <pre><code class="language-python">num = int(input(&#39;请输入一个数字：&#39;)) square = num ** 2 print(&#39;该数字的平方为：&#39;, square) </code></pre> <p>以下是稍微复杂一些的 Python 程序示例，它从用户输入的几个字符串中返回最长的单词：</p> <pre><code class="language-python">str_input = input(&#39;请输入一些字符串，以空格分隔：&#39;) str_list = str_input.split() max_word = &#39;&#39; for word in str_list: if len(word) &gt; len(max_word): max_word = word print(&#39;最长的单词是：&#39;, max_word) </code></pre> <p>该程序将输入字符串分割成一个单词列表，并遍历该列表以查找最长的单词。最后，它打印出该单词。</p>'
-}
-]);
-
-
+const messages = reactive<ChatCompletionRequestMessage[]>([]);
 
 // 输入内容
 let inputVal = ref<string>("");
@@ -57,7 +45,6 @@ async function sendMsg() {
         messages,
       });
 
-
     messages.push({
       role: response.data.choices[0].message
         ?.role as ChatCompletionRequestMessageRoleEnum,
@@ -79,7 +66,6 @@ watch(messages, () => {
     });
   });
 });
-
 </script>
 
 <template>
@@ -101,7 +87,7 @@ watch(messages, () => {
       >
         <div class="chatMeg" v-show="msg.role == 'assistant'">
           <img class="assistant" src="../assets/syz.jpg" alt="gpt" />
-          <div class="assisBubble markdown-body" v-html="msg.content" ></div>
+          <div class="assisBubble markdown-body" v-html="msg.content"></div>
         </div>
 
         <div class="chatMeg" v-show="msg.role == 'user'">
@@ -138,7 +124,6 @@ watch(messages, () => {
   margin: auto;
   background-color: #ffffff;
 
-
   .header {
     height: 8%;
     border-bottom: 1px solid #d6d6d6;
@@ -155,7 +140,6 @@ watch(messages, () => {
     overflow-y: auto;
     margin: 0;
     padding: 10px 0;
-
 
     li {
       list-style: none;
@@ -176,41 +160,33 @@ watch(messages, () => {
           margin: 0 10px;
           border-radius: 4px;
         }
-        img.assistant {
-          margin-top: 10px;
-        }
+
 
         .assisBubble {
           padding: 5px;
-
           font-size: 14px;
-          // color: #000000;
           word-break: hyphenate;
           position: relative;
         }
 
         .userBubble {
-
           padding: 5px;
           font-size: 14px;
           color: #ffffff;
           word-break: hyphenate;
           position: relative;
         }
-
       }
     }
 
     .assisClass {
       justify-content: start;
       background-color: #ffffff;
-
     }
 
     .userClass {
       justify-content: end;
       background-color: #343541;
-
     }
   }
 

@@ -12,7 +12,7 @@ import {
 import { ref, reactive, watch, nextTick } from "vue";
 
 const configuration: Configuration = new Configuration({
-  apiKey: "your-key",
+  apiKey: "key",
 });
 const openai: OpenAIApi = new OpenAIApi(configuration);
 
