@@ -1,13 +1,8 @@
 <script lang="ts" setup>
 import { marked } from "marked";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage } from "openai";
 
-import { ref, reactive, nextTick, watchEffect, watch } from "vue";
-
-const configuration: Configuration = new Configuration({
-  apiKey: "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",
-});
-const openai: OpenAIApi = new OpenAIApi(configuration);
+import { ref, reactive, nextTick } from "vue";
 
 // 使用的模型
 const model: string = "gpt-3.5-turbo";
@@ -47,8 +42,6 @@ async function sendMsg() {
     // 输入框禁用
     isDisabled.value = true;
 
-
-
     // 滚动条滚动到最新消息
     nextTick(() => {
       msgList.value?.scrollTo({
@@ -67,11 +60,10 @@ async function sendMsg() {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          "Bearer your-apikey",
+        Authorization: "Bearer your-apikey",
       },
     });
-    
+
     // 判断状态码是否为200
     if (response.status !== 200) {
       isDisabled.value = false;
@@ -90,7 +82,6 @@ async function sendMsg() {
 
     // 循环获取数据流
     while (true) {
-
       // ReadableStreamDefaultReader每调用一次read方法可以返回一个数据流
       // 包含一个done和value，
       // done是结束标识，当为true时则表示结束
@@ -109,7 +100,6 @@ async function sendMsg() {
       const dataArr: string[] = text.split("\n\n");
       // 遍历分割出来的数组
       for (const data of dataArr) {
-
         // 每条数据为 data:{xxx},因此对其进行截取
         const jsonStr = data.slice(5, data.length);
 
@@ -125,7 +115,6 @@ async function sendMsg() {
           break;
         }
 
-        
         if (json.choices[0].delta.hasOwnProperty("content")) {
           // 内容的拼接
           content += json.choices[0].delta.content;
