@@ -10,4 +10,4 @@
  npm i
  npm run dev
 ```
-![图片](src/assets/%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA.gif)
+![图片](src/assets/action.gif)
