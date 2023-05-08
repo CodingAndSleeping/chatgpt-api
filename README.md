@@ -1,9 +1,6 @@
 
 
-
-
-
-### 在 chatindex.vue 里把apikey替换为自己的
+### 在 `WeChat.vue` 和 `ChatGPT.vue` 里把`your-key`替换为自己的`apikey`
 
 ### 运行以下命令
 ```
